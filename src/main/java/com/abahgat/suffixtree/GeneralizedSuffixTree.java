@@ -178,20 +178,26 @@ public class GeneralizedSuffixTree {
         // proceed with tree construction (closely related to procedure in
         // Ukkonen's paper)
         String text = "";
-        // iterate over the string, one char at a time
-        for (int i = 0; i < remainder.length(); i++) {
+        final int length = remainder.length();
+
+        // iterate over the string, one code point at a time
+        for (int offset = 0; offset < length; ) {
             // line 6
-            text += remainder.charAt(i);
+            final int codePoint = remainder.codePointAt(offset);
+            text += String.valueOf(Character.toChars(codePoint));
+
             // use intern to make sure the resulting string is in the pool.
             text = text.intern();
 
             // line 7: update the tree with the new transitions due to this new char
-            Pair<Node, String> active = update(s, text, remainder.substring(i), index);
+            Pair<Node, String> active = update(s, text, remainder.substring(offset), index);
             // line 8: make sure the active pair is canonical
             active = canonize(active.getFirst(), active.getSecond());
             
             s = active.getFirst();
             text = active.getSecond();
+
+            offset += Character.charCount(codePoint);
         }
 
         // add leaf suffix link, is necessary

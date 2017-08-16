@@ -31,12 +31,21 @@ In addition to those Strings, there are a set of different strings that are impl
 
 This kind of "implicit path" is important in the testAndSplit method.
 
+## Modifications in this fork
+
+This fork differs from the [original](https://github.com/abahgat/suffixtree) by allowing for any Unicode code points in the strings inserted
+into the GST.
+
+These modifications are offered under the same Apache License 2.0 as the original. 
+
+The modifications are Copyright 2017 David Sykes
+
 ## License
 
 This Generalized Suffix Tree is released under the Apache License 2.0
 
-   Copyright 2012 Alessandro Bahgat Shehata
-
+   Copyright 2012 Alessandro Bahgat Shehata 
+   
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
