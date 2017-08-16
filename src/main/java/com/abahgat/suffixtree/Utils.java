@@ -15,6 +15,7 @@
  */
 package com.abahgat.suffixtree;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,14 +48,29 @@ public class Utils {
      */
     public static Set<String> getSubstrings(String str) {
         Set<String> ret = new HashSet<String>();
+        if (str.length() == 0) {
+            return Collections.emptySet();
+        }
+
+        int[] codePoints = str.codePoints().toArray();
+
         // compute all substrings
-        for (int len = 1; len <= str.length(); ++len) {
-            for (int start = 0; start + len <= str.length(); ++start) {
-                String itstr = str.substring(start, start + len);
+        for (int len = 1; len <= codePoints.length; ++len) {
+            for (int start = 0; start + len <= codePoints.length; ++start) {
+                String itstr = codePointSubstring(codePoints, start, start+len);
                 ret.add(itstr);
             }
         }
 
         return ret;
     }
+
+    private static String codePointSubstring(int[] codePoints, int startIndex, int endIndex) {
+        StringBuilder s = new StringBuilder();
+        for (int index = startIndex; index < endIndex; index++) {
+            s.appendCodePoint(codePoints[index]);
+        }
+        return s.toString();
+    }
+
 }

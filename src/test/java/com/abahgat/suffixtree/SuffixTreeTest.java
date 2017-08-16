@@ -174,7 +174,9 @@ public class SuffixTreeTest extends TestCase {
             "sofsavannahatfergusonaveandbethesdard",
             "savannahga",
             "bethesdahomeforboys",
-            "bethesda"};
+            "bethesda",
+            "\u540d\u79f0",
+        };
         for (int i = 0; i < words.length; ++i) {
             in.put(words[i], i);
 

@@ -55,8 +55,10 @@ class Node {
     private static final int INCREMENT = 1;
     /**
      * The set of edges starting from this node
+     *
+     * The key is the code point of the character
      */
-    private final Map<Character, Edge> edges;
+    private final Map<Integer, Edge> edges;
     /**
      * The suffix link as described in Ukkonen's paper.
      * if str is the string denoted by the path from the root to this, this.suffix
@@ -217,15 +219,15 @@ class Node {
         return resultCount;
     }
 
-    void addEdge(char ch, Edge e) {
-        edges.put(ch, e);
+    void addEdge(int codePoint, Edge e) {
+        edges.put(codePoint, e);
     }
 
-    Edge getEdge(char ch) {
-        return edges.get(ch);
+    Edge getEdge(int codePoint) {
+        return edges.get(codePoint);
     }
 
-    Map<Character, Edge> getEdges() {
+    Map<Integer, Edge> getEdges() {
         return edges;
     }
 
