@@ -63,4 +63,23 @@ public class UtilsTest extends TestCase {
         assertTrue(out.isEmpty());
     }
 
+    public void testRemoveLastCodePoint() {
+        System.out.println("remove last code point");
+
+        String in = "banana";
+        assertEquals("banan", Utils.removeLastCodePoint(in));
+
+        in = "banan\u79f0";
+        assertEquals("banan", Utils.removeLastCodePoint(in));
+    }
+
+    public void testLastCodePoint() {
+        System.out.println("last code point");
+
+        String in = "banana";
+        assertEquals('a', Utils.lastCodePoint(in));
+
+        in = "banan\u79f0";
+        assertEquals(0x79f0, Utils.lastCodePoint(in));
+    }
 }

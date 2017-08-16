@@ -20,7 +20,81 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Utils {
-    
+
+    /**
+     * Get the last code point in the given {@link String}.
+     * <p>
+     *     This method will most likely throw an exception if an empty string
+     *     is passed in.
+     * </p>
+     *
+     * @param in the {@link String} from which we want the last code point
+     * @return the last code point in the given {@link String}
+     */
+    public static int lastCodePoint(String in) {
+        if (in.length() == 1) {
+            return in.codePointAt(0);
+        }
+
+        char checkCh = in.charAt(in.length() - 2);
+        if (Character.isHighSurrogate(checkCh)) {
+            return Character.toCodePoint(checkCh, in.charAt(in.length() - 1));
+        }
+
+        return in.codePointAt(in.length() - 1);
+    }
+
+    /**
+     * Remove the last code point from the given {@link String} and return the prefix.
+     * <p>
+     *     If an empty string is passed, or <code>null</code>, or a string of length 1
+     *     then this method will return the empty string.
+     * </p>
+     *
+     * @param in the {@link String} to remove the last code point from
+     * @return a new {@link String} which is the input string with the last code point removed
+     */
+    public static String removeLastCodePoint(String in) {
+        if (in == null || in.length() < 2) {
+            return "";
+        }
+
+        char checkCh = in.charAt(in.length() - 2);
+        if (Character.isHighSurrogate(checkCh)) {
+            return in.substring(0, in.length() - 2);
+        }
+
+        return in.substring(0, in.length() - 1);
+    }
+
+
+    /**
+     * Remove the last code point from the given {@link String} and return the prefix.
+     * <p>
+     *     This is the equivalent of calling <code>in.substring(1)</code> if we did not
+     *     care about Unicode characters that are encoded using surrogate pairs.
+     * </p>
+     * <p>
+     *     If an empty string is passed, or <code>null</code>, or a string of length 1
+     *     then this method will return the empty string.
+     * </p>
+     *
+     * @param in the {@link String} to remove the first code point from
+     * @return a new {@link String} which is the input string with the first code point removed
+     */
+    public static String removeFirstCodePoint(String in) {
+        if (in == null || in.length() < 2) {
+            return "";
+        }
+
+        char checkCh = in.charAt(0);
+        if (Character.isHighSurrogate(checkCh)) {
+            return in.substring(2);
+        }
+
+        return in.substring(1);
+    }
+
     /**
      * Normalize an input string
      * 
