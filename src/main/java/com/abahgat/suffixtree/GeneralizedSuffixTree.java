@@ -124,27 +124,28 @@ public class GeneralizedSuffixTree {
         Node currentNode = root;
         Edge currentEdge;
 
-        for (int i = 0; i < word.length(); ++i) {
-            char ch = word.charAt(i);
+        int codePoint;
+        for (int offset = 0; offset < word.length(); offset += Character.charCount(codePoint)) {
+            codePoint = word.codePointAt(offset);
             // follow the edge corresponding to this char
-            currentEdge = currentNode.getEdge(ch);
+            currentEdge = currentNode.getEdge(codePoint);
             if (null == currentEdge) {
                 // there is no edge starting with this char
                 return null;
             } else {
                 String label = currentEdge.getLabel();
-                int lenToMatch = Math.min(word.length() - i, label.length());
-                if (!word.regionMatches(i, label, 0, lenToMatch)) {
+                int lenToMatch = Math.min(word.length() - offset, label.length());
+                if (!word.regionMatches(offset, label, 0, lenToMatch)) {
                     // the label on the edge does not correspond to the one in the string to search
                     return null;
                 }
 
-                if (label.length() >= word.length() - i) {
+                if (label.length() >= word.length() - offset) {
                     return currentEdge.getDest();
                 } else {
                     // advance to next node
                     currentNode = currentEdge.getDest();
-                    i += lenToMatch - 1;
+                    offset += lenToMatch - Character.charCount(codePoint);
                 }
             }
         }
