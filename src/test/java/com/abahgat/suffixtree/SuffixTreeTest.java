@@ -52,6 +52,35 @@ public class SuffixTreeTest extends TestCase {
         assertEmpty(in.search("ookepr"));
     }
 
+    public void testBasicTreeGenerationWithSurrogatePair() {
+        GeneralizedSuffixTree in = new GeneralizedSuffixTree();
+
+        String word = "\u540d\ud800\udf81\u79f0";
+        in.put(word, 0);
+
+        /* test that every substring is contained within the tree */
+        for (String s : getSubstrings(word)) {
+            assertTrue(in.search(s).contains(0));
+        }
+        assertEmpty(in.search("\u540d\u79f0"));
+        assertEmpty(in.search("\u540d\ud800\udf81\ud800\udf81"));
+        assertEmpty(in.search("\u540d\u540d\ud800\udf81\u79f0"));
+
+        in = new GeneralizedSuffixTree();
+
+        word = "\ud800\udf81\u540d\u79f0";
+        in.put(word, 0);
+
+        /* test that every substring is contained within the tree */
+        for (String s : getSubstrings(word)) {
+            assertTrue(in.search(s).contains(0));
+        }
+        assertEmpty(in.search("\u540d\u79f0\ud800\udf81"));
+        assertEmpty(in.search("\u540d\ud800\udf81"));
+        assertEmpty(in.search("\ud800\udf81\u540d\u540d\u79f0"));
+
+    }
+
     public void testWeirdword() {
         GeneralizedSuffixTree in = new GeneralizedSuffixTree();
 
@@ -138,7 +167,7 @@ public class SuffixTreeTest extends TestCase {
                 assertTrue(in.search(s).contains(i + words.length));
             }
         }
-        
+
         in.computeCount();
         testResultsCount(in.getRoot());
 
@@ -175,7 +204,7 @@ public class SuffixTreeTest extends TestCase {
             "savannahga",
             "bethesdahomeforboys",
             "bethesda",
-            "\u540d\u79f0",
+            "\u540d\ud800\udf81\u79f0",
         };
         for (int i = 0; i < words.length; ++i) {
             in.put(words[i], i);
@@ -188,6 +217,7 @@ public class SuffixTreeTest extends TestCase {
 
 
         }
+
         // verify post-addition
         for (int i = 0; i < words.length; ++i) {
             for (String s : getSubstrings(words[i])) {
