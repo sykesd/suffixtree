@@ -113,6 +113,14 @@ public class GeneralizedSuffixTree {
     }
 
     /**
+     * Compact the arrays used for storing the indexes to the minimum actually
+     * required.
+     */
+    public void compact() {
+        root.compact();
+    }
+
+    /**
      * Returns the tree node (if present) that corresponds to the given string.
      */
     private Node searchNode(String word) {

@@ -52,7 +52,11 @@ class Node {
     /**
      * The increment in size used when the payload array is full
      */
-    private static final int INCREMENT = 1;
+    private static final int INCREMENT = 8;
+    /**
+     * The size at which we increment by twice {@link #INCREMENT}
+     */
+    private static final int DOUBLE_INCREMENT_THRESHOLD = 4 * INCREMENT;
     /**
      * The set of edges starting from this node
      *
@@ -143,6 +147,27 @@ class Node {
             iter = iter.suffix;
         }
 
+    }
+
+    /**
+     * Compact the payload array to the minimum size needed to store its current
+     * contents.
+     * <p>
+     *     This will also compact any {@link Node}s reachable from this one, and
+     *     so on down the tree.
+     * </p>
+     */
+    void compact() {
+        if (lastIdx < data.length) {
+            int[] copy = new int[lastIdx];
+            System.arraycopy(data, 0, copy, 0, lastIdx);
+            data = copy;
+        }
+
+        edges.values().stream()
+                .map(Edge::getDest)
+                .filter(dest -> dest != null)
+                .forEach(Node::compact);
     }
 
     /**
@@ -241,10 +266,35 @@ class Node {
 
     private void addIndex(int index) {
         if (lastIdx == data.length) {
-            int[] copy = new int[data.length + INCREMENT];
+            int[] copy = new int[data.length + increment(data.length)];
             System.arraycopy(data, 0, copy, 0, data.length);
             data = copy;
         }
         data[lastIdx++] = index;
+    }
+
+    /**
+     * How much should we increase the size of the payload array by, given its current length?
+     * <p>
+     *     In very large trees with lots of entries (hundreds of thousands+), construction time
+     *     is dominated by allocations and array copying and GC work cleaning up all these temporary
+     *     objects.
+     * </p>
+     * <p>
+     *     By increasing the payload array size by a fixed about each time, we can greatly increase
+     *     the speed of construction.
+     * </p>
+     * <p>
+     *     To recover unused space, the {@link #compact} method can be called to once construction
+     *     is complete.
+     * </p>
+     * @param currentLength
+     * @return
+     */
+    private int increment(int currentLength) {
+        if (currentLength >= DOUBLE_INCREMENT_THRESHOLD) {
+            return 2 * INCREMENT;
+        }
+        return INCREMENT;
     }
 }

@@ -32,6 +32,7 @@ public class SuffixTreeTest extends TestCase {
 
         String word = "cacao";
         in.put(word, 0);
+        in.compact();
 
         /* test that every substring is contained within the tree */
         for (String s : getSubstrings(word)) {
@@ -44,6 +45,8 @@ public class SuffixTreeTest extends TestCase {
         in = new GeneralizedSuffixTree();
         word = "bookkeeper";
         in.put(word, 0);
+        in.compact();
+
         for (String s : getSubstrings(word)) {
             assertTrue(in.search(s).contains(0));
         }
@@ -57,6 +60,7 @@ public class SuffixTreeTest extends TestCase {
 
         String word = "\u540d\ud800\udf81\u79f0";
         in.put(word, 0);
+        in.compact();
 
         /* test that every substring is contained within the tree */
         for (String s : getSubstrings(word)) {
@@ -67,6 +71,7 @@ public class SuffixTreeTest extends TestCase {
         assertEmpty(in.search("\u540d\u540d\ud800\udf81\u79f0"));
 
         in = new GeneralizedSuffixTree();
+        in.compact();
 
         word = "\ud800\udf81\u540d\u79f0";
         in.put(word, 0);
@@ -86,6 +91,7 @@ public class SuffixTreeTest extends TestCase {
 
         String word = "cacacato";
         in.put(word, 0);
+        in.compact();
 
         /* test that every substring is contained within the tree */
         for (String s : getSubstrings(word)) {
@@ -99,6 +105,7 @@ public class SuffixTreeTest extends TestCase {
         String word = "cacao";
         in.put(word, 0);
         in.put(word, 1);
+        in.compact();
 
         for (String s : getSubstrings(word)) {
             assertTrue(in.search(s).contains(0));
@@ -119,6 +126,7 @@ public class SuffixTreeTest extends TestCase {
             }
 
         }
+        in.compact();
 
         // verify post-addition
         for (int i = 0; i < words.length; ++i) {
@@ -150,6 +158,8 @@ public class SuffixTreeTest extends TestCase {
                 assertTrue("substring " + s + " not found after adding " + words[i], result.contains(i));
             }
         }
+        in.compact();
+
         // verify post-addition
         for (int i = 0; i < words.length; ++i) {
             for (String s : getSubstrings(words[i])) {
@@ -168,6 +178,7 @@ public class SuffixTreeTest extends TestCase {
             }
         }
 
+        in.compact();
         in.computeCount();
         testResultsCount(in.getRoot());
 
@@ -215,8 +226,8 @@ public class SuffixTreeTest extends TestCase {
                 assertTrue("substring " + s + " not found after adding " + words[i], result.contains(i));
             }
 
-
         }
+        in.compact();
 
         // verify post-addition
         for (int i = 0; i < words.length; ++i) {
@@ -234,6 +245,7 @@ public class SuffixTreeTest extends TestCase {
             }
         }
 
+        in.compact();
         in.computeCount();
         testResultsCount(in.getRoot());
 
