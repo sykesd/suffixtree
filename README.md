@@ -36,6 +36,8 @@ This kind of "implicit path" is important in the testAndSplit method.
 This fork differs from the [original](https://github.com/abahgat/suffixtree) by allowing for any Unicode code points in the strings inserted
 into the GST.
 
+It also contains changes in the handling of the references (indexes) during construction in order to make constructing very large trees faster.
+
 These modifications are offered under the same Apache License 2.0 as the original. 
 
 The modifications are Copyright 2017 David Sykes
